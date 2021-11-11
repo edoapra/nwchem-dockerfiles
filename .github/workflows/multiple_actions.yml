@@ -29,9 +29,11 @@ jobs:
           nwchem-dev: 'nwchem-dev/*'
           builddebs.buster: 'builddebs.buster/*'
     - name: gdb1
-      run: echo "${{ steps.filter.outputs }}"
+      run: echo "s.f.o" "${{ steps.filter.outputs }}"
+      run: echo "s.f.o.c" "${{ steps.filter.outputs.changes }}"
+      run: echo "s.f.o.f" "${{ steps.filter.outputs.folders }}"
     - name: cleanup_nochange
-      if: steps.filter.outputs.folder == '[]'
+      if: steps.filter.outputs.folders == '[]'
       run: echo "no change detected"
   init:
     runs-on: ubuntu-latest
