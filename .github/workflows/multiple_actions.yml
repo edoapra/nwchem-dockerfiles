@@ -67,11 +67,11 @@ jobs:
             echo "2matrix folder is" ${{ matrix.folder }}
             echo "2matrix folder=hw is" "${{ matrix.folder }} != 'helloworld'"
       - name: gdb33
-        if ${{ matrix.folder }} != 'helloworld'
+        if: ${{ matrix.folder }} != 'helloworld'
         run: |
             echo "folder is not hw'
       - name: gdb44
-        if ${{ matrix.folder }} == 'helloworld'
+        if: ${{ matrix.folder }} == 'helloworld'
         run: |
             echo "folder is  hw'
       - name: build_filter
