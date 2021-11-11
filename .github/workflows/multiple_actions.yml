@@ -61,6 +61,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: gdb22
+        run: |
+            echo "1matrix folder is" "${{ matrix.folder }}"
+            echo "2matrix folder is" ${{ matrix.folder }}
       - name: build_filter
         uses: docker/build-push-action@v2
         with:
