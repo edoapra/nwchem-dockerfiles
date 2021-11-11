@@ -46,7 +46,7 @@ jobs:
   docker_filter:
     needs: [changes, init]
     if: |
-        (github.event_name != 'workflow_dispatch') && (github.event_name != 'schedule') && (${{ steps.filter.outputs.folders }} != '[]')
+        (github.event_name != 'workflow_dispatch') && (github.event_name != 'schedule') && (${{ needs.changes.outputs.folders }} != '[]')
     strategy:
         matrix:
           folder: ${{ fromJSON(needs.changes.outputs.folders) }}
