@@ -2,7 +2,7 @@ Docker build of the current NWChem master branch
 ========================================
 
 
-Based on earlier work by Vladimir Konjkov Konjkov.VV@gmail.com
+Based on earlier work by Vladimir Konjkov 
 
 https://nwchemgit.github.io/Special_AWCforum/st/id2181
 
