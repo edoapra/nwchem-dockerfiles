@@ -34,7 +34,7 @@ jobs:
           echo "s.f.o.c" "${{ steps.filter.outputs.changes }}"
           echo "s.f.o.f" "${{ steps.filter.outputs.folders }}"
     - name: cleanup_nochange
-      if: steps.filter.outputs.folders == '[]'
+      if: steps.filter.outputs.changes == '[]'
       run: echo "no change detected"
   init:
     runs-on: ubuntu-latest
