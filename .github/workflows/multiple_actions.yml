@@ -28,6 +28,11 @@ jobs:
           nwchem-700.amazonlinux.sockets: 'nwchem-700.amazonlinux.sockets/*'
           nwchem-dev: 'nwchem-dev/*'
           builddebs.buster: 'builddebs.buster/*'
+    - name: gdb1
+      run: echo "${{ steps.filter.outputs) }}"
+    - name: cleanup_nochange
+      if: steps.filter.outputs.folder == '[]'
+      run: echo "no change detected"
   init:
     runs-on: ubuntu-latest
     steps:
