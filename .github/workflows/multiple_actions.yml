@@ -65,7 +65,7 @@ jobs:
         if: ${{ matrix.folder  != 'helloworld' }}
         uses: docker/build-push-action@v2
         with:
-          push: (${{ github.actor == github.repository_owner }})
+          push: ${{ github.actor == github.repository_owner }}
           context: ${{ matrix.folder }}
           tags: ghcr.io/${{ github.actor }}/${{ matrix.folder }}:latest
   docker_schedule:
