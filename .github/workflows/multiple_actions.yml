@@ -69,11 +69,13 @@ jobs:
       - name: gdb33
         if: ${{ matrix.folder }} != 'helloworld'
         run: |
-            echo "folder is not hw'
+            echo "folder is not hw" 
+            echo "folder is"  ${{ matrix.folder }}
       - name: gdb44
         if: ${{ matrix.folder }} == 'helloworld'
         run: |
             echo "folder is  hw'
+            echo "folder is"  ${{ matrix.folder }}
       - name: build_filter
         uses: docker/build-push-action@v2
         with:
