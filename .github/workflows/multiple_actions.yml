@@ -83,17 +83,16 @@ jobs:
         if:  ( github.actor == github.repository_owner ) && ( matrix.folder  != 'helloworld' )
         run: |
           docker pull ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}
-          docker images
           cd /tmp
-          pwd
-          umask
-          umask -S
           umask u=rwx,g=rwx,o=rwx
           umask -S
           svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
-          ls -la
-          if [[ ${{ matrix.folder }} != 'helloworld' ]]; then docker run --rm --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}  dft_he2+ ; fi
+          if [[ ${{ matrix.folder }} != 'helloworld' ]]; then \
+          docker run --rm --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
+          -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
+          dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
+          fi
 
   docker_schedule:
     if: (github.event_name == 'workflow_dispatch') || (github.event_name == 'schedule')
