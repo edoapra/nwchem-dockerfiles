@@ -80,7 +80,8 @@ jobs:
           platforms: ${{ matrix.archs }}
           tags: ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}:latest
       - name: load and test image
-        if: ${{ github.actor == github.repository_owner }}
+        if: |
+            ( ${{ github.actor == github.repository_owner }} ) && (${{ matrix.folder  != 'helloworld' }})
         run: |
           docker pull ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}
           docker images
