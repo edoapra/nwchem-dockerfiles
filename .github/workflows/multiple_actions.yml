@@ -84,14 +84,11 @@ jobs:
         run: |
           docker pull ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}
           docker images
+          cd /tmp
           pwd
+          svn export https://github.com/nwchemgit/nwchem/trunk/QA
+          cd QA
           ls -la
-          which svn || true
-          which git || true
-          which curl || true
-          git clone --depth=1 https://github.com/nwchemgit/nwchem
-          ls -la
-          cd nwchem/QA
           if [[ ${{ matrix.folder }} != 'helloworld' ]]; then docker run --rm --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}  dft_he2+ ; fi
 
   docker_schedule:
