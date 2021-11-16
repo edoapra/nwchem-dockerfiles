@@ -86,6 +86,9 @@ jobs:
           docker images
           pwd
           ls -la
+          apt-get -y install subversion
+          svn export https://github.com/nwchemgit/nwchem/trunk/QA
+          ls -la
           cd QA
           if [[ ${{ matrix.folder }} != 'helloworld' ]]; then docker run --rm --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}  dft_he2+ ; fi
 
