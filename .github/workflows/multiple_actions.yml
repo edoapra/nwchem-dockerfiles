@@ -93,7 +93,7 @@ jobs:
           svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
           ls -la
-          if [[ ${{ matrix.folder }} != 'helloworld' ]]; then docker run--rm --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}  dft_he2+ ; fi
+          if [[ ${{ matrix.folder }} != 'helloworld' ]]; then docker run --rm --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }}  dft_he2+ ; fi
 
   docker_schedule:
     if: (github.event_name == 'workflow_dispatch') || (github.event_name == 'schedule')
