@@ -46,6 +46,11 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      - name: dbg0
+        run: |
+          if [[ matrix.folder  != 'helloworld' ]] && [[  matrix.arch != 'linux/arm/v7' ]]; then \
+            echo dbg0000 ; \
+          fi
       - name: Checkout
         uses: actions/checkout@v2
       - name: Qemu
