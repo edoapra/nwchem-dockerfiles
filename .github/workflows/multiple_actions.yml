@@ -46,11 +46,6 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: dbg0
-        run: |
-          if [[ ('${{ matrix.folder }}' != 'helloworld') && ('${{ matrix.arch }}' != 'linux/arm/v7')  ]] ; then \
-            echo dbg0003 ; \
-          fi
       - name: Checkout
         uses: actions/checkout@v2
       - name: Qemu
@@ -90,7 +85,7 @@ jobs:
           umask -S
           svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
-          if [[ ${{ matrix.folder }} != 'helloworld' ]] && [[ ${{ matrix.arch}} != 'linux/arm/v7' ]]; then \
+          if [[ ('${{ matrix.folder }}' != 'helloworld') && ('${{ matrix.arch }}' != 'linux/arm/v7')  ]] ; then \
           docker run --rm --platform ${{matrix.archs }} \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
@@ -145,7 +140,7 @@ jobs:
           umask -S
           svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
-          if [[ ${{ matrix.folder }} != 'helloworld' ]] && [[ ${{ matrix.arch}} != 'linux/arm/v7' ]]; then \
+          if [[ ('${{ matrix.folder }}' != 'helloworld') && ('${{ matrix.arch }}' != 'linux/arm/v7')  ]] ; then \
           docker run --rm --platform ${{matrix.archs }} \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
