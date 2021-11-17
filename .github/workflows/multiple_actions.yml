@@ -23,9 +23,6 @@ jobs:
       id: filter
       with:
         filters: |
-          nwchem-700.fedora.sockets: 'nwchem-700.fedora.sockets/*'
-          nwchem-700.mpipr: 'nwchem-700.mpipr/*'
-          nwchem-700.amazonlinux.sockets: 'nwchem-700.amazonlinux.sockets/*'
           nwchem-dev: 'nwchem-dev/*'
           builddebs.buster: 'builddebs.buster/*'
     - name: cleanup_nochange
@@ -92,7 +89,7 @@ jobs:
           docker run --rm --platform ${{matrix.archs }} \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-          procs 2 dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
+          dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
           fi
 
   docker_schedule:
@@ -147,5 +144,5 @@ jobs:
           docker run --rm --platform ${{matrix.archs }} \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-          procs 2 dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
+          dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
           fi
