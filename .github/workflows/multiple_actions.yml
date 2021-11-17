@@ -91,7 +91,7 @@ jobs:
           if [[ ${{ matrix.folder }} != 'helloworld' ]]; then \
           docker run --rm -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-          dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
+          procs 2dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
           fi
 
   docker_schedule:
@@ -145,5 +145,5 @@ jobs:
           if [[ ${{ matrix.folder }} != 'helloworld' ]]; then \
           docker run --rm -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-          dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
+          procs 2 dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
           fi
