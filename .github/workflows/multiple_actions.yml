@@ -89,7 +89,8 @@ jobs:
           svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
           if [[ ${{ matrix.folder }} != 'helloworld' ]]; then \
-          docker run --rm -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
+          docker run --rm --platform ${{matrix.archs }} \
+          -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
           procs 2 dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
           fi
@@ -143,7 +144,8 @@ jobs:
           svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
           if [[ ${{ matrix.folder }} != 'helloworld' ]]; then \
-          docker run --rm -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
+          docker run --rm --platform ${{matrix.archs }} \
+          -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
           procs 2 dft_he2+ prop_mep_gcube cosmo_h2o_dft pyqa3 ;\
           fi
