@@ -48,7 +48,7 @@ jobs:
     steps:
       - name: dbg0
         run: |
-          if [[ (${{ matrix.folder }} != 'helloworld') && (${{ matrix.arch }} != 'linux/arm/v7')  ]] ; then \
+          if [[ ('${{ matrix.folder }}' != 'helloworld') && ('${{ matrix.arch }}' != 'linux/arm/v7')  ]] ; then \
             echo dbg0003 ; \
           fi
       - name: Checkout
