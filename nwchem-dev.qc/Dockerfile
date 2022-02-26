@@ -36,6 +36,7 @@ ENV  NWCHEM_TOP="/opt/nwchem" \
      OMPI_ALLOW_RUN_AS_ROOT=1 \
      OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
      PATH=$PATH:/opt/nwchem/contrib/quasar \
+     MPIRUN_NPOPT=" --allow-run-as-root -np " \
      NWCHEM_EXECUTABLE=/opt/nwchem/bin/LINUX64/nwchem
 
 ARG nwchem_shaid=fb4151614232a00d292c2644c00745890e599522
