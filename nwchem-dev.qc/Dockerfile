@@ -33,6 +33,8 @@ ENV  NWCHEM_TOP="/opt/nwchem" \
      USE_PYTHONCONFIG=Y  \
      PATH=$PATH:/opt/nwchem/bin/LINUX64 \
      OMP_NUM_THREADS=1 \
+     OMPI_ALLOW_RUN_AS_ROOT=1 \
+     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
      PATH=$PATH:/opt/nwchem/contrib/quasar \
      NWCHEM_EXECUTABLE=/opt/nwchem/bin/LINUX64/nwchem
 
