@@ -76,22 +76,11 @@ jobs:
           cd /tmp
           umask u=rwx,g=rwx,o=rwx
           umask -S
-          svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
+          svn export https://github.com/nwchemgit/nwchem/branches/yaml/QA >& svnout.log
           cd QA
           if [[ ${{ matrix.archs }} != 'linux/arm/v7'  ]]; then \
           docker run --rm --platform ${{matrix.archs }} \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-          procs 2 h2o_opt prop_mep_gcube pyqa3 ;\
+          procs 2 h2o_opt prop_mep_gcube pyqa3 ducc_be;\
           fi
-      - name: store cache
-        if:  ( github.actor == github.repository_owner ) && ( matrix.folder  != 'helloworld' ) 
-        run: |
-            mkdir -p ~/cache
-            ls -lrt ~/cache
-            docker run  --privileged --user 0 --rm --platform ${{matrix.archs }} \
-            --entrypoint='/bin/cp' -v ~/cache:/data \
-            ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-            -rp /opt/nwchem/src/libext /data/.
-            ls -lrt ~/cache || true
-            ls -lrta ~/cache/libext || true
