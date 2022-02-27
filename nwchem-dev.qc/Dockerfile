@@ -52,9 +52,9 @@ RUN apt-get update -y && \
 # --------------------------------
 # Build NWChem (master branch)
 # ---------------------------------
-    && cd /opt \
-    && git clone https://github.com/nwchemgit/nwchem.git \
-    && cd /opt/nwchem && git checkout ${nwchem_shaid} \
+    && cd /opt ; rm -rf nwchem||true \
+    && git clone  https://github.com/nwchemgit/nwchem.git \
+    && cd /opt/nwchem && git checkout ${nwchem_shaid} && rm -rf .git \
     && cd /opt/nwchem/src && make nwchem_config && make -j3 \
 # -------------------------------------------
 # Cleanup (remove unnecessary nwchem files)
