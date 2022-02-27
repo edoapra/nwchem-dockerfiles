@@ -75,6 +75,7 @@ RUN apt-get update -y && \
     && echo "mpirun  -np 2 \$NWCHEM_EXECUTABLE \$1" >> /usr/bin/nwchem_driver \
     && chmod +x /usr/bin/nwchem_driver
 
+USER        nwchem
 
 WORKDIR     /opt/data
 
