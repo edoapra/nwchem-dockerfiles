@@ -38,6 +38,7 @@ ENV  NWCHEM_TOP="/opt/nwchem" \
 
 ARG nwchem_shaid=fb4151614232a00d292c2644c00745890e599522
 
+SHELL ["/bin/bash","-c"]
 #create user nwchem
 RUN           groupadd -r nwchem -g 1994 \
               && useradd  -u 1994 -r -g nwchem -c 'NWChem user' -m -d /opt/nwchem -s /bin/bash nwchem 
@@ -61,6 +62,7 @@ RUN apt-get update -y && \
     && cd /opt/nwchem && mv src/basis . && rm -rf src/* && mv basis src/ \
     && mv /opt/nwchem/QA/chem_library_tests/ /opt/nwchem/ \
     && rm -rf INSTALL* release.notes.* lib travis web doc examples QA \
+    && chown -R nwchem /opt/nwchem && chgrp -R nwchem /opt/nwchem \
 # ---------------------------------------------
 # Cleanup (remove unnecessary ubuntu packages)
 # ---------------------------------------------
