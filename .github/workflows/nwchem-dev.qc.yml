@@ -14,7 +14,7 @@ jobs:
           folder:
             - nwchem-dev.qc
           archs: [linux/amd64]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 420
     steps:
       - name: Checkout
