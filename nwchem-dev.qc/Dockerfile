@@ -31,9 +31,8 @@ ENV  NWCHEM_TOP="/opt/nwchem" \
      PYTHONVERSION=2.7  \
      PYTHONHOME="/usr"  \
      USE_PYTHONCONFIG=Y  \
-     PATH=$PATH:/opt/nwchem/bin/LINUX64 \
      OMP_NUM_THREADS=1 \
-     PATH=$PATH:/opt/nwchem/contrib/quasar \
+     PATH=$PATH:/opt/nwchem/bin/LINUX64:/opt/nwchem/contrib/quasar \
      NWCHEM_EXECUTABLE=/opt/nwchem/bin/LINUX64/nwchem
 
 ARG nwchem_shaid=fb4151614232a00d292c2644c00745890e599522
