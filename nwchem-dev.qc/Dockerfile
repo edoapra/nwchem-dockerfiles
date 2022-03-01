@@ -11,6 +11,10 @@ FROM ubuntu:18.04
 # Setup environment
 # --------------------------------
 
+#create user nwchem
+RUN           groupadd -r nwchem -g 1994 \
+              && useradd  -u 1994 -r -g nwchem -c 'NWChem user' -m -d /opt/nwchem -s /bin/bash nwchem 
+
 ENV  NWCHEM_TOP="/opt/nwchem" \
      NWCHEM_TARGET=LINUX64 \
      ARMCI_NETWORK=MPI-PR \
@@ -31,9 +35,8 @@ ENV  NWCHEM_TOP="/opt/nwchem" \
      PYTHONVERSION=2.7  \
      PYTHONHOME="/usr"  \
      USE_PYTHONCONFIG=Y  \
-     PATH=$PATH:/opt/nwchem/bin/LINUX64 \
      OMP_NUM_THREADS=1 \
-     PATH=$PATH:/opt/nwchem/contrib/quasar \
+     PATH=$PATH:/opt/nwchem/bin/LINUX64:/opt/nwchem/contrib/quasar \
      NWCHEM_EXECUTABLE=/opt/nwchem/bin/LINUX64/nwchem
 
 ARG nwchem_shaid=fb4151614232a00d292c2644c00745890e599522
@@ -64,6 +67,7 @@ RUN apt-get update -y && \
     && apt-get update && apt-get --no-install-recommends install -y openmpi-bin openssh-client libgfortran-7-dev python-dev python3 python3-wheel python3-setuptools python3-pip \
     && pip3 install pyyaml && chmod +x /opt/nwchem/contrib/quasar/yaml_driver \
     && apt-get clean && apt-get purge && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && chown -R nwchem /opt/nwchem && chgrp -R nwchem /opt/nwchem \
     && echo "#!""/bin/bash" > /usr/bin/nwchem_driver \
     && echo "mpirun --allow-run-as-root -np 2 \$NWCHEM_EXECUTABLE \$1" >> /usr/bin/nwchem_driver \
     && chmod +x /usr/bin/nwchem_driver
