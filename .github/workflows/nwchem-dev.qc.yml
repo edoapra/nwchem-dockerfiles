@@ -81,7 +81,7 @@ jobs:
           docker run --rm  \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           -v `pwd`:/opt/nwchem/QA ghcr.io/${{ github.actor }}/${{ matrix.folder }}/${{ steps.get-arch.outputs.arch }} \
-          procs 2 h2o_opt prop_mep_gcube cosmo_h2o_dft pyqa3 
+          procs 2 h2o_opt prop_mep_gcube 
       - name: store cache
         if:  ( github.actor == github.repository_owner ) && ( matrix.folder  != 'helloworld' ) 
         run: |
