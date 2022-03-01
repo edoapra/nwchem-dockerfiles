@@ -76,7 +76,7 @@ jobs:
           cd /tmp
           umask u=rwx,g=rwx,o=rwx
           umask -S
-          svn export https://github.com/nwchemgit/nwchem/branches/trunk/QA >& svnout.log
+          svn export https://github.com/nwchemgit/nwchem/trunk/QA >& svnout.log
           cd QA
           docker run --rm  \
           -e NWCHEM_EXECUTABLE=/opt/nwchem/bin/nwchem --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
