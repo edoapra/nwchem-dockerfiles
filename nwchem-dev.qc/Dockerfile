@@ -39,6 +39,7 @@ ENV  NWCHEM_TOP="/opt/nwchem" \
      PATH=$PATH:/opt/nwchem/bin/LINUX64:/opt/nwchem/contrib/quasar \
      NWCHEM_EXECUTABLE=/opt/nwchem/bin/LINUX64/nwchem
 
+SHELL ["/bin/bash","-c"]
 ARG nwchem_shaid=fb4151614232a00d292c2644c00745890e599522
 
 # ------------------------------------------------------------
