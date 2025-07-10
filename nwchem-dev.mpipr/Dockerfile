@@ -33,6 +33,7 @@ ENV         NWCHEM_TOP="/opt/nwchem" \
             BLAS_SIZE=8 \
             SCALAPACK_SIZE=8 \
 	    USE_HWOPT=n \
+	    USE_OPENMP=1 \
 	    USE_LIBXC=1 \
 	    USE_SIMINT=1 \
 	    SIMINT_VECTOR=AVX2 \

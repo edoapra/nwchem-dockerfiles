@@ -160,5 +160,5 @@ jobs:
             docker run --privileged --user 0 --rm \
             --entrypoint='/bin/cp' -v ~/cache:/data \
             ${{ env.tag }} \
-            -rp /opt/cache/libext/simint.tar.bz2 /data/.  || true
+            -rp /opt/cache/simint.tar.bz2 /data/.  || true
             ls -Ralrt ~/cache || true
