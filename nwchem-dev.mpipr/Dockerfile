@@ -46,6 +46,7 @@ ENV         NWCHEM_TOP="/opt/nwchem" \
 #ENV         MRCC_METHODS=y
 #ENV         CCSDTQ=y
 #ENV         CCSDTLR=y
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN         apt-get update \
             && apt-get -y upgrade \
 	    && if [[ $MPI_IMPL == mpich ]]; then export libmpi=mpich; export libmpidev=libmpich-dev; fi \
