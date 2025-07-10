@@ -48,11 +48,11 @@ ENV         NWCHEM_TOP="/opt/nwchem" \
 #ENV         CCSDTLR=y
 RUN         apt-get update \
             && apt-get -y upgrade \
-	    && if [[ $MPI_IMPL == mpich ]]; then export libmpi=mpich; export libmpi-dev=libmpich-dev; fi \
-	    && if [[ $MPI_IMPL == openmpi ]]; then export libmpi=libopenmpi3; export libmpi-dev=openmpi-devel; fi \
+	    && if [[ $MPI_IMPL == mpich ]]; then export libmpi=mpich; export libmpidev=libmpich-dev; fi \
+	    && if [[ $MPI_IMPL == openmpi ]]; then export libmpi=libopenmpi3; export libmpidev=openmpi-devel; fi \
 	    && echo libmpi $libmpi \
-	    && echo libmpi-dev $libmpi-dev \
-            && apt-get install -y  gfortran $libmpi $libmpi-dev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
+	    && echo libmpidev $libmpidev \
+            && apt-get install -y  gfortran $libmpi $libmpidev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
             && apt-get clean \
             && env|grep GITHUB_RE ; echo NWCHEM_BRANCH $NWCHEM_BRANCH ; echo RRR;cd /opt; rm -rf nwchem||true \
 	    && wget -q https://github.com/${GITHUB_REPOSITORY_OWNER}/nwchem/tarball/${NWCHEM_BRANCH} -O - | tar -xz  --exclude=web --exclude=examples --exclude=doc --exclude="nwxc*"  --exclude="chem-library-tests" \
@@ -71,7 +71,7 @@ RUN         apt-get update \
 	    && strip ../bin/*/nwchem  || true\
 	    && cd $NWCHEM_TOP/QA/tests && rm -rf talc metagga* neb* had* dft* hess*  || true\
 #clean unnecessary packages
-            &&         apt-get -y purge git  make curl subversion  unzip cmake perl tcsh $libmpi-dev libx265-199 libgcc-12-dev &&  apt-get -y autoremove && apt-get install -y libgomp1 $libmpi && apt-get clean \
+            &&         apt-get -y purge git  make curl subversion  unzip cmake perl tcsh $libmpidev libx265-199 libgcc-12-dev &&  apt-get -y autoremove && apt-get install -y libgomp1 $libmpi && apt-get clean \
 && echo "dddddddddddd"  \
 && dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100 \
 && echo "dddddddddddd" \
