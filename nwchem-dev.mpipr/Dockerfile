@@ -58,6 +58,11 @@ RUN         apt-get update \
             && make nwchem_config && make -j3  \
 #clean unnecessary source to reduce docker size
             && rm -rf tce tools nwdft NWints geom symmetry util nwxc ddscf lapack blas rism argos peigs rmdft gradients symmetry property smd lucia dplot propery hessian ccsd mp2_grad moints cafe analyz dimqm /opt/nwchem/lib \
+	    && strip ../bin/*/nwchem  || true\
+	    && rm libext/libxc/install/bin/xc* || true \
+	    && cd libext ; tar cjvf libext.tar.bz2 include/* lib/* libxc/install/lib/* libxc/install/include/* ||true \
+	    && rm -rf lib/* libxc/install/lib/* ||true \
+	    && cd $NWCHEM_TOP/src/NWints/simint/libsimint_source/ ; tar cjvf $NWCHEM_TOP/src/libext/simint.tar.bz2 simint_install/* || true \
 #clean unnecessary packages
             &&         apt-get -y remove git  make curl subversion  unzip cmake perl tcsh  &&  apt-get -y autoremove && apt-get clean \
 && echo "dddddddddddd"  \
