@@ -161,8 +161,4 @@ jobs:
             --entrypoint='/bin/cp' -v ~/cache:/data \
             ${{ env.tag }} \
             -rp /opt/nwchem/src/libext/simint.tar.bz2 /data/.  || true
-            docker run --privileged --user 0 --rm \
-            --entrypoint='/bin/cp' -v ~/cache:/data \
-            ${{ env.tag }} \
-            -rp /usr/local/ompi.tar.bz2 /data/.  || true
             ls -Ralrt ~/cache || true

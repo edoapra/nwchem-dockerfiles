@@ -9,7 +9,14 @@
 
 FROM        debian
 
+COPY Dockerfile cache* /tmp/
 MAINTAINER  Edoardo Apra <edoardo.apra@pnnl.gov>
+ARG         FC
+ARG         NWCHEM_BRANCH
+ARG         GITHUB_REPOSITORY_OWNER
+ARG         ARMCI_NETWORK
+ARG         CACHE_HIT
+
 
 RUN         apt-get update \
             && apt-get -y upgrade \
@@ -17,8 +24,12 @@ RUN         apt-get update \
             && apt-get clean
 #get OpenBLAS and compile with 64-bit integers
 WORKDIR     /opt
-ENV         ARMCI_NETWORK=MPI-PR NWCHEM_TOP="/opt/nwchem" \
-            NWCHEM_BRANCH=master \
+ENV         FC=${FC}
+ENV         NWCHEM_BRANCH=${NWCHEM_BRANCH}
+ENV         GITHUB_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER}
+ENV         CACHE_HIT=${CACHE_HIT}
+ENV         ARMCI_NETWORK=${ARMCI_NETWORK}
+ENV         NWCHEM_TOP="/opt/nwchem" \
             NWCHEM_TARGET=LINUX64 \
             NWCHEM_MODULES="all python" \
             BUILD_OPENBLAS=1 \
@@ -39,7 +50,10 @@ ENV         ARMCI_NETWORK=MPI-PR NWCHEM_TOP="/opt/nwchem" \
 RUN  env|grep GITHUB_RE ; echo NWCHEM_BRANCH $NWCHEM_BRANCH ; echo RRR;cd /opt; rm -rf nwchem||true; wget -q https://github.com/${GITHUB_REPOSITORY_OWNER}/nwchem/tarball/${NWCHEM_BRANCH} -O - | tar -xz  --exclude=web --exclude=examples --exclude=doc --exclude="nwxc*"  --exclude="chem-library-tests" \
 	    &&    mv ${GITHUB_REPOSITORY_OWNER}-nwchem-* nwchem \
             && cd nwchem/src \
-            && make nwchem_config && make -j3  \
+	    && echo 'checking cache #1 ' \
+            && if [[ -f /tmp/libext.tar.bz2 ]]; then cd libext ; tar xjf /tmp/libext.tar.bz2; rm -rf /tmp/libext.tar.bz2 ; cd ..  ; fi\
+	    && echo 'checking cache #3 ' \
+            && if [[ -f /tmp/simint.tar.bz2 ]]; then cd NWints/simint/libsimint_source ; tar xjf /tmp/simint.tar.bz2; rm -rf /tmp/simint.tar.bz2 ; cd ../../..  ;            && make nwchem_config && make -j3  \
 #clean unnecessary source to reduce docker size
             && rm -rf tce tools nwdft NWints geom symmetry util nwxc ddscf lapack blas rism argos peigs rmdft gradients symmetry property smd lucia dplot propery hessian ccsd mp2_grad moints cafe analyz dimqm /opt/nwchem/lib
 
