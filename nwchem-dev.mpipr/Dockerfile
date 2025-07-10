@@ -50,7 +50,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN         apt-get update \
             && apt-get -y upgrade \
 	    && if [[ $MPI_IMPL == mpich ]]; then export libmpi=mpich; export libmpidev=libmpich-dev; fi \
-	    && if [[ $MPI_IMPL == openmpi ]]; then export libmpi=libopenmpi3; export libmpidev=openmpi-devel; fi \
+	    && if [[ $MPI_IMPL == openmpi ]]; then export libmpi=libopenmpi3\ openmpi-bin; export libmpidev=libopenmpi-dev; fi \
 	    && echo libmpi $libmpi \
 	    && echo libmpidev $libmpidev \
             && apt-get install -y  gfortran $libmpi $libmpidev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
