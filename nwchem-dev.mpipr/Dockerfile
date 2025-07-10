@@ -18,10 +18,6 @@ ARG         ARMCI_NETWORK
 ARG         CACHE_HIT
 
 
-RUN         apt-get update \
-            && apt-get -y upgrade \
-            && apt-get install -y  gfortran mpich libmpich-dev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
-            && apt-get clean
 #get OpenBLAS and compile with 64-bit integers
 WORKDIR     /opt
 ENV         FC=${FC}
@@ -47,7 +43,12 @@ ENV         NWCHEM_TOP="/opt/nwchem" \
 #ENV         MRCC_METHODS=y
 #ENV         CCSDTQ=y
 #ENV         CCSDTLR=y
-RUN  env|grep GITHUB_RE ; echo NWCHEM_BRANCH $NWCHEM_BRANCH ; echo RRR;cd /opt; rm -rf nwchem||true; wget -q https://github.com/${GITHUB_REPOSITORY_OWNER}/nwchem/tarball/${NWCHEM_BRANCH} -O - | tar -xz  --exclude=web --exclude=examples --exclude=doc --exclude="nwxc*"  --exclude="chem-library-tests" \
+RUN         apt-get update \
+            && apt-get -y upgrade \
+            && apt-get install -y  gfortran mpich libmpich-dev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
+            && apt-get clean \
+            && env|grep GITHUB_RE ; echo NWCHEM_BRANCH $NWCHEM_BRANCH ; echo RRR;cd /opt; rm -rf nwchem||true \
+	    && wget -q https://github.com/${GITHUB_REPOSITORY_OWNER}/nwchem/tarball/${NWCHEM_BRANCH} -O - | tar -xz  --exclude=web --exclude=examples --exclude=doc --exclude="nwxc*"  --exclude="chem-library-tests" \
 	    &&    mv ${GITHUB_REPOSITORY_OWNER}-nwchem-* nwchem \
             && cd nwchem/src \
 	    && echo 'checking cache #1 ' \
@@ -56,7 +57,14 @@ RUN  env|grep GITHUB_RE ; echo NWCHEM_BRANCH $NWCHEM_BRANCH ; echo RRR;cd /opt; 
             && if [[ -f /tmp/simint.tar.bz2 ]]; then cd NWints/simint/libsimint_source ; tar xjf /tmp/simint.tar.bz2; rm -rf /tmp/simint.tar.bz2 ; cd ../../.. ; fi\
             && make nwchem_config && make -j3  \
 #clean unnecessary source to reduce docker size
-            && rm -rf tce tools nwdft NWints geom symmetry util nwxc ddscf lapack blas rism argos peigs rmdft gradients symmetry property smd lucia dplot propery hessian ccsd mp2_grad moints cafe analyz dimqm /opt/nwchem/lib
+            && rm -rf tce tools nwdft NWints geom symmetry util nwxc ddscf lapack blas rism argos peigs rmdft gradients symmetry property smd lucia dplot propery hessian ccsd mp2_grad moints cafe analyz dimqm /opt/nwchem/lib \
+#clean unnecessary packages
+            &&         apt-get -y remove git  make curl subversion  unzip cmake perl tcsh  &&  apt-get -y autoremove && apt-get clean \
+&& echo "dddddddddddd"  \
+&& dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100 \
+&& echo "dddddddddddd" \
+	    && rm -rf  /var/lib/dpkg/ /var/lib/apt
+
 
 #ENV         NWCHEM_EXECUTABLE=${NWCHEM_TOP}/bin/LINUX64/nwchem
 #ENV         NWCHEM_BASIS_LIBRARY=${NWCHEM_TOP}/src/basis/libraries/
@@ -71,8 +79,6 @@ ENV         FFIELD=amber \
             CHARMM_X=${NWCHEM_TOP}/src/data/charmm_x/ \
             PATH=$PATH:${NWCHEM_TOP}/bin/LINUX64
 
-#clean unnecessary packages
-RUN         apt-get -y remove  make curl subversion  unzip cmake perl tcsh  &&  apt-get -y autoremove && apt-get clean
 
 WORKDIR     /data
 ENTRYPOINT  ["mpirun","-np","3","nwchem"]
