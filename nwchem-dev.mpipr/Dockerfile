@@ -57,14 +57,15 @@ RUN         apt-get update \
             && if [[ -f /tmp/simint.tar.bz2 ]]; then cd NWints/simint/libsimint_source ; tar xjf /tmp/simint.tar.bz2; rm -rf /tmp/simint.tar.bz2 ; cd ../../.. ; fi\
             && make nwchem_config && make -j3  \
 #clean unnecessary source to reduce docker size
-            && rm -rf tce tools nwdft NWints geom symmetry util nwxc ddscf lapack blas rism argos peigs rmdft gradients symmetry property smd lucia dplot propery hessian ccsd mp2_grad moints cafe analyz dimqm /opt/nwchem/lib \
-	    && strip ../bin/*/nwchem  || true\
 	    && rm libext/libxc/install/bin/xc* || true \
 	    && cd libext ; tar cjvf libext.tar.bz2 include/* lib/* libxc/install/lib/* libxc/install/include/* ||true \
 	    && rm -rf lib/* libxc/install/lib/* ||true \
 	    && cd $NWCHEM_TOP/src/NWints/simint/libsimint_source/ ; tar cjvf $NWCHEM_TOP/src/libext/simint.tar.bz2 simint_install/* || true \
+            && cd $NWCHEM_TOP/src && rm -rf  tce tools nwdft NWints geom symmetry util nwxc ddscf lapack blas rism argos peigs rmdft gradients symmetry property smd lucia dplot propery hessian ccsd mp2_grad moints cafe analyz dimqm /opt/nwchem/lib  \
+	    && strip ../bin/*/nwchem  || true\
+	    && cd $NWCHEM_TOP/QA/tests && rm -rf talc metagga* neb* had* dft* hess*  || true\
 #clean unnecessary packages
-            &&         apt-get -y remove git  make curl subversion  unzip cmake perl tcsh  &&  apt-get -y autoremove && apt-get clean \
+            &&         apt-get -y purge git  make curl subversion  unzip cmake perl tcsh libmpich-dev libx265-199 libgcc-12-dev &&  apt-get -y autoremove && apt-get clean \
 && echo "dddddddddddd"  \
 && dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100 \
 && echo "dddddddddddd" \
