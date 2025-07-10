@@ -14,6 +14,7 @@ jobs:
           folder:
             - nwchem-dev.mpipr
           branch: [ master, hotfix/release-7-2-0]
+          mpi_impl: [ mpich, openmpi]
           openmp: [Y]
           fc: [ gfortran]
           armci_network: [ MPI-PR ] 
@@ -38,9 +39,16 @@ jobs:
             echo "omp_tag="  >> $GITHUB_ENV
           fi
         shell: bash
+      - name: mpi_impl tag
+        id: mpi_impl-tag
+        run: |
+          if [[ ${{ matrix.mpi_impl }} != 'mpich'  ]]; then 
+            echo "mpi_impl_tag=$(echo .${{matrix.mpi_impl }}  )"  >> $GITHUB_ENV
+          fi
+        shell: bash
       - name:  cache key
         run: |
-          echo "cache_key=${{ matrix.folder }}-${{ matrix.branch }}${{ env.fc }}${{ env.omp_tag}}-cache-v001" >> $GITHUB_ENV
+          echo "cache_key=${{ matrix.folder }}-${{ matrix.branch }}${{ env.fc }}${{ env.mpi_impl_tag}}${{ env.omp_tag}}-cache-v001" >> $GITHUB_ENV
       - name: Setup cache
         id: setup-cache
         uses: actions/cache@v4
@@ -102,7 +110,7 @@ jobs:
       - name: docker tag
         id: docker-tag
         run: |
-          echo "tag=ghcr.io/${{ github.actor }}/${{ env.longnwversion}}${{ env.omp_tag }}${{ env.armci_net }}${{ env.fc }}" >>  $GITHUB_ENV
+          echo "tag=ghcr.io/${{ github.actor }}/${{ env.longnwversion}}${{ env.mpi_impl_tag}}${{ env.omp_tag }}${{ env.armci_net }}${{ env.fc }}" >>  $GITHUB_ENV
         shell: bash
       - name: builddate
         id: build-date
@@ -125,6 +133,7 @@ jobs:
             CACHE_HIT=${{ env.cache_hit }}
             GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
             ARMCI_NETWORK=${{ matrix.armci_network }}
+            MPI_IMPL=${{ matrix.mpi_impl }}
       - name: load and test image
         if:  ( github.actor == github.repository_owner )
         run: |
