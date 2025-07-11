@@ -40,6 +40,7 @@ ENV         NWCHEM_TOP="/opt/nwchem" \
 	    USE_SIMINT=1 \
 	    SIMINT_VECTOR=AVX2 \
 	    SIMINT_MAXAM=4 \
+	    CXX=g++ \
             USE_MPI=y \
             USE_MPIF=y \
             USE_MPIF4=y 
@@ -53,7 +54,7 @@ RUN         apt-get update \
 	    && if [[ $MPI_IMPL == openmpi ]]; then export libmpi=libopenmpi3\ openmpi-bin; export libmpidev=libopenmpi-dev; fi \
 	    && echo libmpi $libmpi \
 	    && echo libmpidev $libmpidev \
-            && apt-get install -y  gfortran $libmpi $libmpidev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
+            && apt-get install -y  gfortran g++ $libmpi $libmpidev  make ssh patch curl subversion wget unzip perl git file python3 python3-dev bzip2 \
             && apt-get clean \
             && env|grep GITHUB_RE ; echo NWCHEM_BRANCH $NWCHEM_BRANCH ; echo RRR;cd /opt; rm -rf nwchem||true \
 	    && wget -q https://github.com/${GITHUB_REPOSITORY_OWNER}/nwchem/tarball/${NWCHEM_BRANCH} -O - | tar -xz  --exclude=web --exclude=examples --exclude=doc --exclude="nwxc*"  --exclude="chem-library-tests" \

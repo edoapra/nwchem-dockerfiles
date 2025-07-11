@@ -154,6 +154,8 @@ jobs:
           git checkout
           cd QA
           docker run --rm -e LD_LIBRARY_PATH="$MYLDPATH"  \
+          -e OMPI_ALLOW_RUN_AS_ROOT=1  \
+          -e OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1  \
           -v `pwd`:/opt/nwchem/QA -w /opt/nwchem/QA --entrypoint='/opt/nwchem/QA/runtests.mpi.unix' \
           ${{ env.tag }} \
           procs 2 h2o_opt prop_mep_gcube
