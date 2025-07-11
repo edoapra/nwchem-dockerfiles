@@ -64,7 +64,7 @@ RUN         apt-get update \
             && if [[ -f /tmp/libext.tar.bz2 ]]; then cd libext ; tar xjf /tmp/libext.tar.bz2; rm -rf /tmp/libext.tar.bz2 ; cd ..  ; fi\
 	    && echo 'checking cache #3 ' \
             && if [[ -f /tmp/simint.tar.bz2 ]]; then cd NWints/simint/libsimint_source ; tar xjf /tmp/simint.tar.bz2; rm -rf /tmp/simint.tar.bz2 ; cd ../../.. ; fi\
-            && make nwchem_config && make -j3  \
+            && make nwchem_config && make -j3 || { echo "Compilation failure"; exit 1; }  \
 #clean unnecessary source to reduce docker size
 	    && mkdir -p /opt/cache \
 	    && cd libext ; tar cjvf /opt/cache/libext.tar.bz2 include/* lib/* libxc/install/lib/* libxc/install/include/* ||true \
@@ -73,7 +73,7 @@ RUN         apt-get update \
 	    && strip ../bin/*/nwchem  || true\
 	    && cd $NWCHEM_TOP/QA/tests && rm -rf talc metagga* neb* had* dft* hess*  || true\
 #clean unnecessary packages
-            &&         apt-get -y purge git  make curl subversion  unzip cmake perl tcsh $libmpidev libx265-199 libgcc-12-dev &&  apt-get -y autoremove && apt-get install -y libgomp1 $libmpi && apt-get clean \
+            &&         apt-get -y purge git  make curl subversion  unzip cmake perl tcsh $libmpidev libx265-199 libgcc-12-dev &&  apt-get -y autoremove && apt-get install -y libgomp1 libgfortran5 $libmpi && apt-get clean \
 && echo "dddddddddddd"  \
 && dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100 \
 && echo "dddddddddddd" \
