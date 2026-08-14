@@ -221,7 +221,7 @@ COPY --from=relink /tmpfile /tmpfile
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update -q=2 && apt  install -y -q=2 libatomic1  binutils bzip2 xz-utils  \
-	     libgfortran5 libpython3.*  libgomp1 libgcc-s1 \
+	     libgfortran5 python3 libpython3.*  libgomp1 libgcc-s1 \
 &&           groupadd -r nwchem -g 1994 \
               && useradd  -u 1994 -r -g nwchem -c 'NWChem user' -M -d /opt/nwchem -s /bin/bash nwchem \
 &&  . /tmpfile; echo "NWCHEM_TARGET is " ${NWCHEM_TARGET} \
